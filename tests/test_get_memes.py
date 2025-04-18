@@ -14,6 +14,13 @@ def test_get_one_meme_with_valid_id(auth_token, get_one_meme_endpoint, created_m
     get_one_meme_endpoint.get_one_meme(auth_token, meme_id)
     get_one_meme_endpoint.check_that_status_is_200()
 
+@pytest.mark.critical
+def test_get_one_meme_contains_required_fields(auth_token, get_one_meme_endpoint, created_meme):
+    meme_id = created_meme
+    get_one_meme_endpoint.get_one_meme(auth_token, meme_id)
+    get_one_meme_endpoint.check_that_status_is_200()
+    get_one_meme_endpoint.check_meme_contains_required_fields()
+
 
 @pytest.mark.high
 def test_get_one_meme_with_invalid_id(auth_token, get_one_meme_endpoint):
@@ -34,3 +41,4 @@ def test_get_one_meme_with_invalid_token(get_one_meme_endpoint, created_meme):
     invalid_token = "fake_token_123"
     get_one_meme_endpoint.get_one_meme(invalid_token, meme_id)
     get_one_meme_endpoint.check_response_is_unauthorized()
+

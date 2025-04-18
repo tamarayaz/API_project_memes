@@ -9,7 +9,6 @@ class Endpoint:
     @allure.step("Check that response is 200")
     def check_that_status_is_200(self):
         assert self.response.status_code == 200
-        print("RESPONSE STATUS:", self.response.status_code)
 
     @allure.step("Check that the token is in response")
     def check_token_was_returned(self):
@@ -30,8 +29,6 @@ class Endpoint:
 
     @allure.step("Check that the request is invalid")
     def check_bad_request_is_400(self):
-        print("RESPONSE STATUS:", self.response.status_code)
-        print("RESPONSE BODY:", self.response.text)
         assert self.response.status_code == 400
 
     @allure.step("Check if the server returned an error")
@@ -41,5 +38,10 @@ class Endpoint:
     @allure.step("Check if the method is not allowed")
     def check_method_not_allowed(self):
         assert self.response.status_code == 405
-        print("RESPONSE STATUS:", self.response.status_code)
-        print("RESPONSE BODY:", self.response.text)
+
+    @allure.step("Check that meme has all required fields")
+    def check_meme_contains_required_fields(self):
+        self.json = self.response.json()
+        required_fields = ["id", "text", "url", "tags", "info"]
+        for field in required_fields:
+            assert field in self.json

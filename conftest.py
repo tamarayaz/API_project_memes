@@ -1,6 +1,4 @@
 import pytest
-
-
 from endpoints.check_token_ import CheckToken
 from endpoints.create_meme import PostMeme
 from endpoints.delete_meme import DeleteMeme
@@ -9,7 +7,6 @@ from endpoints.get_authorize_token import AuthorizeToken
 from endpoints.get_one_meme import GetOneMeme
 from endpoints.update_meme import UpdateMeme
 
-url = 'http://167.172.172.115:52355/'
 
 @pytest.fixture(scope="session")
 def auth_token(authorize_token_endpoint, check_token_endpoint):
@@ -18,7 +15,7 @@ def auth_token(authorize_token_endpoint, check_token_endpoint):
     def get_token():
         if "token" in token_cache:
             verify_token = check_token_endpoint.check_token(token_cache["token"])
-            if verify_token .status_code == 200:
+            if verify_token.status_code == 200:
                 return token_cache["token"]
 
         new_token = authorize_token_endpoint.get_authorize_token({"name": "tamara"}).json()["token"]
@@ -47,7 +44,6 @@ def get_one_meme_endpoint():
 def post_meme_endpoint():
     return PostMeme()
 
-
 @pytest.fixture()
 def update_meme_endpoint():
     return UpdateMeme()
@@ -73,9 +69,3 @@ def created_meme(auth_token, post_meme_endpoint, delete_meme_endpoint):
 
     yield meme_id
     delete_meme_endpoint.delete_meme(meme_id, token)
-
-#pytest tests/test_authorization.py -v
-# pytest tests/test_delete_memes.py
-# pytest tests/test_create_memes.py
-# pytest tests/test_update_memes.py
-# pytest tests/test_get_memes.py -v
