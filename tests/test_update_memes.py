@@ -57,3 +57,16 @@ def test_update_with_non_existent_method(auth_token, update_meme_endpoint, creat
     body = valid_meme_body_put(created_meme)
     update_meme_endpoint.update_meme_patch(created_meme, body, auth_token)
     update_meme_endpoint.check_method_not_allowed()
+
+@pytest.mark.high
+def test_update_meme_without_token(update_meme_endpoint, created_meme):
+    body = valid_meme_body_put(created_meme)
+    update_meme_endpoint.update_meme_put(created_meme, body, token=None)
+    update_meme_endpoint.check_response_is_unauthorized()
+
+@pytest.mark.high
+def test_update_meme_with_invalid_token(update_meme_endpoint, created_meme):
+    body = valid_meme_body_put(created_meme)
+    invalid_token = "invalid_token123"
+    update_meme_endpoint.update_meme_put(created_meme, body, invalid_token)
+    update_meme_endpoint.check_response_is_unauthorized()
