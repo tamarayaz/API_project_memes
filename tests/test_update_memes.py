@@ -3,10 +3,20 @@ from data import valid_meme_body_put, meme_body_missing_field
 
 
 @pytest.mark.critical
-def test_update_meme_with_valid_data(auth_token, update_meme_endpoint, created_meme):
+def test_update_meme_and_verify_response_data(
+        auth_token,
+        update_meme_endpoint,
+        get_one_meme_endpoint,
+        created_meme
+):
     body = valid_meme_body_put(created_meme)
+
     update_meme_endpoint.update_meme_put(created_meme, body, auth_token)
     update_meme_endpoint.check_that_status_is_200()
+
+    get_one_meme_endpoint.get_one_meme(auth_token, created_meme)
+    get_one_meme_endpoint.check_that_status_is_200()
+    get_one_meme_endpoint.check_data_of_meme_equals_expected(body, check_id=False)
 
 
 @pytest.mark.high
@@ -70,3 +80,13 @@ def test_update_meme_with_invalid_token(update_meme_endpoint, created_meme):
     invalid_token = "invalid_token123"
     update_meme_endpoint.update_meme_put(created_meme, body, invalid_token)
     update_meme_endpoint.check_response_is_unauthorized()
+
+
+def test_update_meme_by_non_owner(authorize_token_endpoint, update_meme_endpoint, created_meme):
+    authorize_token_endpoint.get_authorize_token({"name": "not_owner_of_meme"})
+    not_owner_token = authorize_token_endpoint.response.json().get("token")
+
+    body = valid_meme_body_put(created_meme)
+
+    update_meme_endpoint.update_meme_put(created_meme, body, not_owner_token)
+    update_meme_endpoint.check_response_is_forbidden()
