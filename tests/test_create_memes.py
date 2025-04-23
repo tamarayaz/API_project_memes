@@ -3,10 +3,11 @@ from data import valid_meme_body_post, meme_body_missing_field
 
 
 @pytest.mark.critical
-def test_create_meme_with_valid_data(auth_token, post_meme_endpoint):
+def test_create_meme_returns_correct_data(auth_token, post_meme_endpoint):
     body = valid_meme_body_post()
     post_meme_endpoint.create_new_meme(body, auth_token)
     post_meme_endpoint.check_that_status_is_200()
+    post_meme_endpoint.check_data_of_meme_equals_expected(body, check_id=True)
 
 
 @pytest.mark.high
