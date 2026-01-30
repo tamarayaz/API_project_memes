@@ -1,1 +1,1 @@
-# API_project_memes
+# Meme API Testing Project
