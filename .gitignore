@@ -1,6 +1,7 @@
 .venv
 .idea
-__pycahe__
 pytest-cache
 allure-results/
 allure-report/
+__pycache__/
+*.pyc
