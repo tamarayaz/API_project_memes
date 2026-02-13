@@ -4,7 +4,7 @@
 This repository contains an **API test automation project** for a Meme service, created as a practical learning project.
 It demonstrates core approaches to **REST API testing with Python** using pytest and Allure.
 
-**What Is Tested**
+**What is tested**
 
 🔐 Authorization and token validation
 
@@ -18,7 +18,7 @@ It demonstrates core approaches to **REST API testing with Python** using pytest
 
 ❌ Delete meme
 
-**Test Scenarios**
+**Test scenarios**
 
 
 - Positive cases (200 OK)
@@ -55,7 +55,7 @@ allure serve allure-results
 ```
 
 
-**Tech Stack**
+**Tech stack**
 
 - Python
 
